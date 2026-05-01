@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - Personal Diary
+{% endblock %}
+
+{% block content %}
+
+<div class="home-header">
+
+    <h1>
+        Welcome to Your Personal Diary
+        {{ user.username }}
+    </h1>
+
+    <p>
+        Keep your thoughts, feelings,
+        and experiences private.
+    </p>
+
+    <a href="{% url 'add_entry' %}"
+       class="btn btn-primary">
+
+        ✍️ Add New Entry
+
+    </a>
+
+</div>
+
+{% if entries %}
+
+<div class="entries-grid">
+
+    {% for entry in entries %}
+
+    <div class="entry-card">
+
+        <div class="entry-header">
+
+            <h3>{{ entry.title }}</h3>
+
+            <span class="entry-date">
+                {{ entry.created_at|date:"F j, Y, g:i a" }}
+            </span>
+
+        </div>
+
+        <div class="entry-content">
+
+            <p>
+                {{ entry.content }}
+            </p>
+
+        </div>
+
+        <div class="entry-actions">
+
+            <button
+                class="btn btn-warning"
+                onclick="toggleEditForm({{ entry.id }})">
+
+                Edit
+
+            </button>
+
+            <form
+                method="POST"
+                action="{% url 'delete_entry' entry.id %}">
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn btn-danger">
+
+                    Delete
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Hidden Edit Form -->
+
+        <div
+            id="edit-form-{{ entry.id }}"
+            style="display:none; margin-top:20px;">
+
+            <form
+                method="POST"
+                action="{% url 'edit_entry' entry.id %}">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ entry.title }}"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <textarea
+                        name="content"
+                        rows="6"
+                        required>{{ entry.content }}</textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Save Changes
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-state">
+
+    <h2>No Entries Yet</h2>
+
+    <p>
+        Start writing your thoughts
+        and experiences.
+    </p>
+
+    <a
+        href="{% url 'add_entry' %}"
+        class="btn btn-primary">
+
+        ✍️ Add Your First Entry
+
+    </a>
+
+</div>
+
+{% endif %}
+
+<script>
+
+function toggleEditForm(entryId) {
+
+    const form = document.getElementById(
+        `edit-form-${entryId}`
+    );
+
+    if (form.style.display === "none") {
+
+        form.style.display = "block";
+
+    } else {
+
+        form.style.display = "none";
+
+    }
+}
+
+</script>
+
+{% endblock %}

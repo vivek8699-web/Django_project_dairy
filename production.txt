@@ -1,0 +1,24 @@
+https://github.com/cookiecutter/cookiecutter-django
+for production django
+
+
+1. Authentication
+2. Custom User Model
+3. PostgreSQL
+4. Relationships
+5. Forms & Validation
+6. Class-Based Views
+7. Django REST Framework
+8. JWT Authentication
+9. File Uploads
+10. Permissions & Roles
+11. Query Optimization
+12. Pagination
+13. Signals
+14. Middleware
+15. Caching
+16. Celery & Background Tasks
+17. Docker
+18. Deployment
+19. Environment Variables
+20. Testing
